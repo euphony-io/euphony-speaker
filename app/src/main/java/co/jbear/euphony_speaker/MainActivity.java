@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     mSpeakBtn.setText("Speak :)");
                     speakOn = false;
                 } else {
-                    mTxManager.euInitTransmit(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
+                    mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
                     mTxManager.process(count);
                     mSpeakBtn.setText("Stop :(");
                     speakOn = true;
