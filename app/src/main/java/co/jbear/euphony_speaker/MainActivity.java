@@ -13,16 +13,19 @@ import android.widget.Switch;
 
 import euphony.lib.transmitter.EuDataEncoder;
 import euphony.lib.transmitter.EuTxManager;
+import euphony.lib.util.EuOption;
 
 public class MainActivity extends AppCompatActivity {
 
     Spinner mCountSpinner;
+    Spinner mModulationSpinner;
     Switch mLiveSwt;
     EditText mSpeakText;
     Button mSpeakBtn;
 
     EuTxManager mTxManager = new EuTxManager();
-    EuDataEncoder mEuDataEncoder;
+    EuOption euphonyOption = new EuOption();
+
     int count = 1;
     boolean speakOn = false;
     @Override
@@ -44,6 +47,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 count = -1;
+            }
+        });
+
+
+        mModulationSpinner = findViewById(R.id.modulation_spinner);
+        ArrayAdapter<CharSequence> mAdapter = ArrayAdapter.createFromResource(this,
+                R.array.modulation_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mModulationSpinner.setAdapter(mAdapter);
+        mModulationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    default:
+                    case 0:
+                        euphonyOption.setModulationType(EuOption.ModulationType.CPFSK);
+                        break;
+                    case 1:
+                        euphonyOption.setModulationType(EuOption.ModulationType.FSK);
+                        break;
+                    case 2:
+                        euphonyOption.setModulationType(EuOption.ModulationType.ASK);
+                        break;
+                }
+                mTxManager.setOption(euphonyOption);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                euphonyOption.setModulationType(EuOption.ModulationType.CPFSK);
+                mTxManager.setOption(euphonyOption);
             }
         });
 
