@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/nav_graph"
+app:startDestination="@id/mainFragment">
+
+<fragment
+    android:id="@+id/mainFragment"
+    android:name="co.jbear.euphony_speaker.fragments.MainFragment"
+    android:label="fragment_main"
+    tools:layout="@layout/fragment_main" >
+    <action
+        android:id="@+id/action_mainFragment_to_toneFragment"
+        app:destination="@id/toneFragment" />
+    <action
+        android:id="@+id/action_mainFragment_to_messageFragment"
+        app:destination="@id/messageFragment" />
+</fragment>
+<fragment
+    android:id="@+id/messageFragment"
+    android:name="co.jbear.euphony_speaker.fragments.MessageFragment"
+    android:label="fragment_message"
+    tools:layout="@layout/fragment_message" />
+<fragment
+    android:id="@+id/toneFragment"
+    android:name="co.jbear.euphony_speaker.fragments.ToneFragment"
+    android:label="fragment_tone"
+    tools:layout="@layout/fragment_tone" />
+</navigation>

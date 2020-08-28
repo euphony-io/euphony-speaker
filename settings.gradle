@@ -3,6 +3,6 @@ rootProject.name='euphony-speaker'
 
 gradle.ext.language = "java" // or kotlin
 include ':euphony'
-project (":euphony").projectDir = new File(rootProject.projectDir, "../euphony/euphony")
+project (":euphony").projectDir = new File(rootProject.projectDir, "../euphony/project")
 
 
