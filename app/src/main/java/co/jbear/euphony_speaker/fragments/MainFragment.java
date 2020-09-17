@@ -48,7 +48,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        Button msgReceiverBtn = v.findViewById(R.id.msg_receiver_btn);
+        Button msgReceiverBtn = v.findViewById(R.id.msg_generator_btn);
         msgReceiverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

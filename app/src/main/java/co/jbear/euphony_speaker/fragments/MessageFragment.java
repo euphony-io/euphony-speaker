@@ -53,6 +53,7 @@ public class MessageFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_message, container, false);
 
+
         mCountSpinner = v.findViewById(R.id.count_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.count_array, android.R.layout.simple_spinner_item);

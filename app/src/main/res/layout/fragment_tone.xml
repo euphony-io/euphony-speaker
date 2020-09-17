@@ -33,13 +33,46 @@
         android:layout_height="wrap_content"
         android:max="22050"
         android:progress="18000"
-        app:layout_constraintBottom_toTopOf="@id/tone_listen_btn"/>
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/tone_freq_down_btn"/>
 
     <Button
-        android:id="@+id/tone_listen_btn"
+        android:id="@+id/tone_freq_down_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.5"
+        android:text="Frequency Down"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tone_generator_btn" />
+
+    <Button
+        android:id="@+id/tone_freq_up_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.5"
+        android:text="Frequency Up"
+        app:layout_constraintStart_toEndOf="@id/tone_freq_down_btn"
+        app:layout_constraintBottom_toTopOf="@id/tone_generator_btn" />
+
+    <Button
+        android:id="@+id/tone_generator_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Listen"
+        android:text="Generate"
+        app:layout_constraintBottom_toTopOf="@id/tone_call_short_btn"/>
+
+    <Button
+        android:id="@+id/tone_call_short_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call Short"
+        app:layout_constraintBottom_toTopOf="@id/tone_call_long_btn" />
+
+    <Button
+        android:id="@+id/tone_call_long_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call Long"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
