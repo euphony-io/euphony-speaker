@@ -27,6 +27,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Free Frequency Period"
+        app:layout_constraintBottom_toTopOf="@id/frequencyBar"/>
     <SeekBar
         android:id="@+id/frequencyBar"
         android:layout_width="match_parent"
@@ -34,7 +40,25 @@
         android:max="22050"
         android:progress="18000"
         android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/frequencyIntervalBarLabel"/>
+
+    <TextView
+        android:id="@+id/frequencyIntervalBarLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Interval (43.0664) Frequency Period"
+        app:layout_constraintBottom_toTopOf="@id/frequencyIntervalBar"/>
+
+    <SeekBar
+        android:id="@+id/frequencyIntervalBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="22050"
+        android:progress="18000"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/tone_freq_down_btn"/>
+
 
     <Button
         android:id="@+id/tone_freq_down_btn"

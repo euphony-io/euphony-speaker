@@ -20,7 +20,7 @@ public class ToneFragment extends Fragment {
 
     TextView mFreqView, mFreqStatusView;
     Button mFreqDownBtn, mFreqUpBtn, mGenerateBtn, mCallShortBtn, mCallLongBtn;
-    SeekBar mFrequencySeekBar;
+    SeekBar mFrequencySeekBar, mFrequencyIntervalSeekBar;
 
     boolean isGenerateBtnClicked = false;
 
@@ -104,7 +104,6 @@ public class ToneFragment extends Fragment {
         });
 
         mFrequencySeekBar = v.findViewById(R.id.frequencyBar);
-        //mFrequencySeekBar.incrementProgressBy(10);
         mFrequencySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -136,6 +135,41 @@ public class ToneFragment extends Fragment {
         });
 
         mFreqStatusView.setText("" + mFrequencySeekBar.getProgress() + "hz");
+
+        mFrequencyIntervalSeekBar = v.findViewById(R.id.frequencyIntervalBar);
+        mFrequencyIntervalSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                double stepSize = 43.06640625;
+                progress = (int) (((int) Math.round(progress/stepSize)) * stepSize - 21.5332);
+                mFreqStatusView.setText("" + progress + "hz");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mEuphonyTx.setAudioFrequency((double)seekBar.getProgress());
+                Log.d("EUPHONY_SPEAKER", "frequency : " + seekBar.getProgress());
+                if(isGenerateBtnClicked) {
+
+
+                    /*switch (mEuphonyTx.getStatus()) {
+                        case RUNNING:
+                            //mRxManager.setFrequencyForDetect(seekBar.getProgress());
+                            break;
+                        case STOP:
+                            //mEuphonyTx.setToneOn(true);
+                            break;
+                    }*/
+                }
+            }
+        });
+
+
 
         return v;
     }
