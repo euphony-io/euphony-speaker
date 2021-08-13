@@ -24,11 +24,6 @@
             android:id="@+id/count_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
-        <Switch
-            android:id="@+id/live_swt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="LIVE MODE" />
     </LinearLayout>
 
     <Button

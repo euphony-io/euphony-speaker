@@ -17,7 +17,6 @@ import euphony.lib.transmitter.EuTxManager;
 public class MainActivity extends AppCompatActivity {
 
     Spinner mCountSpinner;
-    Switch mLiveSwt;
     EditText mSpeakText;
     Button mSpeakBtn;
 
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mLiveSwt = findViewById(R.id.live_swt);
         mSpeakText = findViewById(R.id.speakText);
         mSpeakBtn = findViewById(R.id.speakBtn);
 
