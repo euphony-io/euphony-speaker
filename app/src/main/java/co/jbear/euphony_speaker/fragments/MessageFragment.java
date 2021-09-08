@@ -14,9 +14,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import co.euphony.tx.EuTxManager;
 import co.jbear.euphony_speaker.R;
-import euphony.lib.transmitter.EuDataEncoder;
-import euphony.lib.transmitter.EuTxManager;
+//import euphony.lib.transmitter.EuDataEncoder;
+//import euphony.lib.transmitter.EuTxManager;
 
 public class MessageFragment extends Fragment {
 
@@ -26,8 +27,8 @@ public class MessageFragment extends Fragment {
     EditText mSpeakText;
     Button mSpeakBtn;
 
-    EuTxManager mTxManager = new EuTxManager();
-    EuDataEncoder mEuDataEncoder;
+    EuTxManager mTxManager = null;
+    //EuDataEncoder mEuDataEncoder;
     int count = 1;
     boolean speakOn = false;
 
@@ -35,16 +36,14 @@ public class MessageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
-        return fragment;
+    public static MessageFragment newInstance() {
+        return new MessageFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        mTxManager = new EuTxManager(getContext());
     }
 
     @Override
@@ -84,7 +83,7 @@ public class MessageFragment extends Fragment {
                     speakOn = false;
                 } else {
                     mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
-                    mTxManager.process(count);
+                    mTxManager.play(5);
                     mSpeakBtn.setText("Stop :(");
                     speakOn = true;
                 }

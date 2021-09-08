@@ -1,7 +1,2 @@
 include ':app'
 rootProject.name='euphony-speaker'
-
-include ':euphony'
-project (":euphony").projectDir = new File(rootProject.projectDir, "../euphony/Euphony")
-
-
