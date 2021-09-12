@@ -46,6 +46,15 @@ public class MainFragment extends Fragment {
             }
         });
 
+        Button eupiBtn = v.findViewById(R.id.eupi_btn);
+
+        eupiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_euPIFragment);
+            }
+        });
+
         Button msgReceiverBtn = v.findViewById(R.id.msg_generator_btn);
         msgReceiverBtn.setOnClickListener(new View.OnClickListener() {
             @Override

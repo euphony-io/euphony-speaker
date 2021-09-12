@@ -16,6 +16,9 @@ app:startDestination="@id/mainFragment">
     <action
         android:id="@+id/action_mainFragment_to_messageFragment"
         app:destination="@id/messageFragment" />
+    <action
+        android:id="@+id/action_mainFragment_to_euPIFragment"
+        app:destination="@id/euPIFragment" />
 </fragment>
 <fragment
     android:id="@+id/messageFragment"
@@ -27,4 +30,9 @@ app:startDestination="@id/mainFragment">
     android:name="co.jbear.euphony_speaker.fragments.ToneFragment"
     android:label="fragment_tone"
     tools:layout="@layout/fragment_tone" />
+<fragment
+    android:id="@+id/euPIFragment"
+    android:name="co.jbear.euphony_speaker.fragments.EuPIFragment"
+    android:label="fragment_eu_p_i"
+    tools:layout="@layout/fragment_eu_p_i" />
 </navigation>

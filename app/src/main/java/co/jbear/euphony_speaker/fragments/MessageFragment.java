@@ -12,23 +12,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import co.euphony.tx.EuTxManager;
 import co.jbear.euphony_speaker.R;
-//import euphony.lib.transmitter.EuDataEncoder;
-//import euphony.lib.transmitter.EuTxManager;
 
 public class MessageFragment extends Fragment {
 
-
     Spinner mCountSpinner;
-    Switch mLiveSwt;
     EditText mSpeakText;
     Button mSpeakBtn;
 
     EuTxManager mTxManager = null;
-    //EuDataEncoder mEuDataEncoder;
     int count = 1;
     boolean speakOn = false;
 
@@ -70,23 +64,19 @@ public class MessageFragment extends Fragment {
             }
         });
 
-        mLiveSwt = v.findViewById(R.id.live_swt);
         mSpeakText = v.findViewById(R.id.speakText);
         mSpeakBtn = v.findViewById(R.id.speakBtn);
 
-        mSpeakBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (speakOn) {
-                    mTxManager.stop();
-                    mSpeakBtn.setText("Speak :)");
-                    speakOn = false;
-                } else {
-                    mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
-                    mTxManager.play(5);
-                    mSpeakBtn.setText("Stop :(");
-                    speakOn = true;
-                }
+        mSpeakBtn.setOnClickListener(view -> {
+            if (speakOn) {
+                mTxManager.stop();
+                mSpeakBtn.setText("Speak :)");
+                speakOn = false;
+            } else {
+                mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
+                mTxManager.play(count);
+                mSpeakBtn.setText("Stop :(");
+                speakOn = true;
             }
         });
 

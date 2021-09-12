@@ -74,7 +74,6 @@ public class ToneFragment extends Fragment {
                 mGenerateBtn.setText("STOP");
                 mCallShortBtn.setEnabled(false);
                 mCallLongBtn.setEnabled(false);
-                txManager.stop();
                 txManager.callEuPI(frequencyValue, EuTxManager.EuPIDuration.LENGTH_FOREVER);
             }
             isGenerateBtnClicked ^= true;
