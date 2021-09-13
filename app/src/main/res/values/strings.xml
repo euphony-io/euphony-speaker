@@ -6,7 +6,6 @@
         <item>FSK</item>
         <item>ASK</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="count_array">
         <item>Forever</item>
         <item>1</item>
@@ -14,5 +13,9 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+    <string-array name="player_engine_array">
+        <item>ANDROID_DEFAULT_ENGINE</item>
+        <item>EUPHONY_NATIVE_ENGINE</item>
     </string-array>
 </resources>

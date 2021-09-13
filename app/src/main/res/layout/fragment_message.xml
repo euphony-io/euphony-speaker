@@ -24,6 +24,10 @@
             android:id="@+id/count_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/engine_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <Button

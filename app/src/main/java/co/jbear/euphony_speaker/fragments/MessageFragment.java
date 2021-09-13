@@ -19,11 +19,13 @@ import co.jbear.euphony_speaker.R;
 public class MessageFragment extends Fragment {
 
     Spinner mCountSpinner;
+    Spinner mEngineSpinner;
     EditText mSpeakText;
     Button mSpeakBtn;
 
     EuTxManager mTxManager = null;
     int count = 1;
+    EuTxManager.PlayerEngine selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
     boolean speakOn = false;
 
     public MessageFragment() {
@@ -64,6 +66,26 @@ public class MessageFragment extends Fragment {
             }
         });
 
+        mEngineSpinner = v.findViewById(R.id.engine_spinner);
+        ArrayAdapter<CharSequence> engineAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.player_engine_array, android.R.layout.simple_spinner_dropdown_item);
+        mEngineSpinner.setAdapter(engineAdapter);
+        mEngineSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 1)
+                    selectedEngineId = EuTxManager.PlayerEngine.EUPHONY_NATIVE_ENGINE;
+                else
+                    selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
+            }
+        });
+
+
         mSpeakText = v.findViewById(R.id.speakText);
         mSpeakBtn = v.findViewById(R.id.speakBtn);
 
@@ -74,7 +96,7 @@ public class MessageFragment extends Fragment {
                 speakOn = false;
             } else {
                 mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
-                mTxManager.play(count);
+                mTxManager.play(count, selectedEngineId);
                 mSpeakBtn.setText("Stop :(");
                 speakOn = true;
             }
