@@ -12,39 +12,34 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 
+import co.euphony.tx.EuTxManager;
 import co.jbear.euphony_speaker.R;
-import euphony.lib.transmitter.EuDataEncoder;
-import euphony.lib.transmitter.EuTxManager;
 
 public class MessageFragment extends Fragment {
 
-
     Spinner mCountSpinner;
-    Switch mLiveSwt;
+    Spinner mEngineSpinner;
     EditText mSpeakText;
     Button mSpeakBtn;
 
-    EuTxManager mTxManager = new EuTxManager();
-    EuDataEncoder mEuDataEncoder;
+    EuTxManager mTxManager = null;
     int count = 1;
+    EuTxManager.PlayerEngine selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
     boolean speakOn = false;
 
     public MessageFragment() {
         // Required empty public constructor
     }
 
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
-        return fragment;
+    public static MessageFragment newInstance() {
+        return new MessageFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        mTxManager = new EuTxManager(getContext());
     }
 
     @Override
@@ -71,23 +66,39 @@ public class MessageFragment extends Fragment {
             }
         });
 
-        mLiveSwt = v.findViewById(R.id.live_swt);
+        mEngineSpinner = v.findViewById(R.id.engine_spinner);
+        ArrayAdapter<CharSequence> engineAdapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.player_engine_array, android.R.layout.simple_spinner_dropdown_item);
+        mEngineSpinner.setAdapter(engineAdapter);
+        mEngineSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 1)
+                    selectedEngineId = EuTxManager.PlayerEngine.EUPHONY_NATIVE_ENGINE;
+                else
+                    selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                selectedEngineId = EuTxManager.PlayerEngine.ANDROID_DEFAULT_ENGINE;
+            }
+        });
+
+
         mSpeakText = v.findViewById(R.id.speakText);
         mSpeakBtn = v.findViewById(R.id.speakBtn);
 
-        mSpeakBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (speakOn) {
-                    mTxManager.stop();
-                    mSpeakBtn.setText("Speak :)");
-                    speakOn = false;
-                } else {
-                    mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
-                    mTxManager.process(count);
-                    mSpeakBtn.setText("Stop :(");
-                    speakOn = true;
-                }
+        mSpeakBtn.setOnClickListener(view -> {
+            if (speakOn) {
+                mTxManager.stop();
+                mSpeakBtn.setText("Speak :)");
+                speakOn = false;
+            } else {
+                mTxManager.setCode(mSpeakText.getText().toString()); // To generate acoustic data "Hello, Euphony" for 5 times.
+                mTxManager.play(count, selectedEngineId);
+                mSpeakBtn.setText("Stop :(");
+                speakOn = true;
             }
         });
 

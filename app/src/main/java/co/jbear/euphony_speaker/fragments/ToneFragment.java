@@ -12,35 +12,32 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import co.euphony.tx.EuTxManager;
 import co.jbear.euphony_speaker.R;
-
-import euphony.lib.transmitter.EuphonyTx;
 
 public class ToneFragment extends Fragment {
 
+    double frequencyValue = 18000.0;
     TextView mFreqView, mFreqStatusView;
     Button mFreqDownBtn, mFreqUpBtn, mGenerateBtn, mCallShortBtn, mCallLongBtn;
     SeekBar mFrequencySeekBar, mFrequencyIntervalSeekBar;
 
     boolean isGenerateBtnClicked = false;
 
-    EuphonyTx mEuphonyTx;
+    EuTxManager txManager;
 
     public ToneFragment() {
         // Required empty public constructor
     }
 
-    public static ToneFragment newInstance(String param1, String param2) {
-        ToneFragment fragment = new ToneFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    public static ToneFragment newInstance() {
+        return new ToneFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEuphonyTx = new EuphonyTx(this.getContext());
+        txManager = new EuTxManager(this.getContext());
     }
 
     @Override
@@ -52,55 +49,34 @@ public class ToneFragment extends Fragment {
         mFreqStatusView = v.findViewById(R.id.frequency_status);
 
         mFreqDownBtn = v.findViewById(R.id.tone_freq_down_btn);
-        mFreqDownBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFrequency(getFrequency() - 1);
-            }
-        });
+        mFreqDownBtn.setOnClickListener(v1 -> setFrequency(getFrequency() - 1));
 
         mFreqUpBtn = v.findViewById(R.id.tone_freq_up_btn);
-        mFreqUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFrequency(getFrequency() + 1);
-            }
-        });
+        mFreqUpBtn.setOnClickListener(v13 -> setFrequency(getFrequency() + 1));
 
         mCallShortBtn = v.findViewById(R.id.tone_call_short_btn);
-        mCallShortBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEuphonyTx.callAPI(mFrequencySeekBar.getProgress(), EuphonyTx.EpnyAPIDuration.LENGTH_SHORT);
-            }
-        });
+        mCallShortBtn.setOnClickListener(v12 ->
+                txManager.callEuPI(mFrequencySeekBar.getProgress(), EuTxManager.EuPIDuration.LENGTH_SHORT));
 
         mCallLongBtn = v.findViewById(R.id.tone_call_long_btn);
-        mCallLongBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEuphonyTx.callAPI(mFrequencySeekBar.getProgress(), EuphonyTx.EpnyAPIDuration.LENGTH_LONG);
-            }
-        });
+        mCallLongBtn.setOnClickListener(v14 ->
+                txManager.callEuPI(mFrequencySeekBar.getProgress(), EuTxManager.EuPIDuration.LENGTH_LONG));
 
         mGenerateBtn = v.findViewById(R.id.tone_generator_btn);
-        mGenerateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("EUPHONY_SPEAKER", "STATUS : " + mEuphonyTx.getStatus());
-                if(isGenerateBtnClicked) {
-                    mGenerateBtn.setText("GENERATE");
-                    mCallLongBtn.setEnabled(true);
-                }
-                else {
-                    mGenerateBtn.setText("STOP");
-                    mCallLongBtn.setEnabled(false);
-                }
-                isGenerateBtnClicked ^= true;
-
-                mEuphonyTx.setToneOn(isGenerateBtnClicked);
-
+        mGenerateBtn.setOnClickListener(v15 -> {
+            if(isGenerateBtnClicked) {
+                mGenerateBtn.setText("GENERATE");
+                mCallShortBtn.setEnabled(true);
+                mCallLongBtn.setEnabled(true);
+                txManager.stop();
             }
+            else {
+                mGenerateBtn.setText("STOP");
+                mCallShortBtn.setEnabled(false);
+                mCallLongBtn.setEnabled(false);
+                txManager.callEuPI(frequencyValue, EuTxManager.EuPIDuration.LENGTH_FOREVER);
+            }
+            isGenerateBtnClicked ^= true;
         });
 
         mFrequencySeekBar = v.findViewById(R.id.frequencyBar);
@@ -108,6 +84,7 @@ public class ToneFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mFreqStatusView.setText("" + progress + "hz");
+                frequencyValue = (double) progress;
             }
 
             @Override
@@ -117,19 +94,11 @@ public class ToneFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mEuphonyTx.setAudioFrequency((double)seekBar.getProgress());
-                Log.d("EUPHONY_SPEAKER", "frequency : " + seekBar.getProgress());
                 if(isGenerateBtnClicked) {
+                    txManager.stop();
+                    txManager.callEuPI((double)seekBar.getProgress(), EuTxManager.EuPIDuration.LENGTH_FOREVER);
 
-
-                    /*switch (mEuphonyTx.getStatus()) {
-                        case RUNNING:
-                            //mRxManager.setFrequencyForDetect(seekBar.getProgress());
-                            break;
-                        case STOP:
-                            //mEuphonyTx.setToneOn(true);
-                            break;
-                    }*/
+                    Log.d("EUPHONY_SPEAKER", "frequency : " + seekBar.getProgress());
                 }
             }
         });
@@ -143,6 +112,7 @@ public class ToneFragment extends Fragment {
                 double stepSize = 43.06640625;
                 progress = (int) (((int) Math.round(progress/stepSize)) * stepSize - 21.5332);
                 mFreqStatusView.setText("" + progress + "hz");
+                frequencyValue = (double) progress;
             }
 
             @Override
@@ -152,24 +122,13 @@ public class ToneFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mEuphonyTx.setAudioFrequency((double)seekBar.getProgress());
-                Log.d("EUPHONY_SPEAKER", "frequency : " + seekBar.getProgress());
                 if(isGenerateBtnClicked) {
-
-
-                    /*switch (mEuphonyTx.getStatus()) {
-                        case RUNNING:
-                            //mRxManager.setFrequencyForDetect(seekBar.getProgress());
-                            break;
-                        case STOP:
-                            //mEuphonyTx.setToneOn(true);
-                            break;
-                    }*/
+                    txManager.stop();
+                    txManager.callEuPI((double)seekBar.getProgress(), EuTxManager.EuPIDuration.LENGTH_FOREVER);
+                    Log.d("EUPHONY_SPEAKER", "frequency : " + seekBar.getProgress());
                 }
             }
         });
-
-
 
         return v;
     }
@@ -179,8 +138,6 @@ public class ToneFragment extends Fragment {
     }
 
     private void setFrequency(double freq) {
-        if(mEuphonyTx != null)
-            mEuphonyTx.setAudioFrequency(freq);
 
         if(mFrequencySeekBar != null)
             mFrequencySeekBar.setProgress((int)freq);

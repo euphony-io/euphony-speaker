@@ -23,7 +23,7 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance(String param1, String param2) {
+    public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         return fragment;
     }
@@ -31,8 +31,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -45,6 +43,15 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_toneFragment);
+            }
+        });
+
+        Button eupiBtn = v.findViewById(R.id.eupi_btn);
+
+        eupiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_euPIFragment);
             }
         });
 

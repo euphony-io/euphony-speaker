@@ -20,6 +20,11 @@ android {
             testCoverageEnabled true
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -30,7 +35,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(path: ':euphony')
+    implementation(name: 'euphony', ext: 'aar')
+    //implementation project(path: ':euphony')
     //implementation 'euphony.lib:euphony:0.7.1.6'
     implementation 'com.google.android.material:material:1.2.0-alpha02'
 

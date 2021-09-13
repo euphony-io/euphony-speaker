@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">euphony-speaker</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="modulation_array">
+        <item>CPFSK</item>
+        <item>FSK</item>
+        <item>ASK</item>
+    </string-array>
     <string-array name="count_array">
         <item>Forever</item>
         <item>1</item>
@@ -8,9 +14,8 @@
         <item>4</item>
         <item>5</item>
     </string-array>
-    <string-array name="modulation_array">
-        <item>CPFSK</item>
-        <item>FSK</item>
-        <item>ASK</item>
+    <string-array name="player_engine_array">
+        <item>ANDROID_DEFAULT_ENGINE</item>
+        <item>EUPHONY_NATIVE_ENGINE</item>
     </string-array>
 </resources>
